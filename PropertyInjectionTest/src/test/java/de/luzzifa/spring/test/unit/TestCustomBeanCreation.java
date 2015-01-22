@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package de.luzzifa.spring.test;
+package de.luzzifa.spring.test.unit;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -26,21 +28,27 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * </p>
  * @author Wolfgang Deifel
  */
-public class TestFactory
+public class TestCustomBeanCreation
 {
-	private final ApplicationContext context;
-
-	/**
-	 * 
-	 */
-	public TestFactory()
+	private ApplicationContext context;
+	
+	@Before
+	public void createApplicationContext()
 	{
-		context = new ClassPathXmlApplicationContext("spring-test.xml");
+		this.context = new ClassPathXmlApplicationContext("spring-test.xml");
 	}
 	
-	public Object getProtoBean()
+	@Test
+	public void testCreateBean3TimesWorks()
 	{
-		return context.getBean("testBean");
+		Object protoBean1 = context.getBean("testBean");
+		System.out.println("ProtoBean1: "+protoBean1+"@"+protoBean1.hashCode());
+		
+		Object protoBean2 = context.getBean("testBean");
+		System.out.println("ProtoBean2: "+protoBean2+"@"+protoBean2.hashCode());
+		
+		Object protoBean3 = context.getBean("testBean");
+		System.out.println("ProtoBean3: "+protoBean3+"@"+protoBean3.hashCode());
 	}
 
 }

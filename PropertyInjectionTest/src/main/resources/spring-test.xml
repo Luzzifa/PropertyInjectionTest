@@ -5,16 +5,13 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
-<!-- 
-	<bean class="de.luzzifa.spring.test.CustomScopeConfigurer" />
- -->
 	
-	<bean class="de.luzzifa.spring.test.TestBeanPostProcessor" /> 	
+	<bean class="de.luzzifa.spring.test.CustomBeanPostProcessor" /> 	
 <!-- 
- 	<context:property-placeholder location="classpath:springtest.properties"/>
+ 	<context:property-placeholder location="classpath:spring-test.properties"/>
  -->
 
-	<bean id="testBean" class="de.luzzifa.spring.test.CustomScopedBean" scope="prototype"
+	<bean id="testBean" class="de.luzzifa.spring.test.CustomBean" scope="prototype"
 	 p:stringList="${stringList}">
 	</bean>
 

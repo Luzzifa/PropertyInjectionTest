@@ -9,13 +9,13 @@ import java.util.List;
  * @author wdeifel
  *
  */
-public class CustomScopedBean
+public class CustomBean
 {
 	private List<String> stringList;
 	/**
 	 * 
 	 */
-	public CustomScopedBean()
+	public CustomBean()
 	{
 		// TODO Auto-generated constructor stub
 	}

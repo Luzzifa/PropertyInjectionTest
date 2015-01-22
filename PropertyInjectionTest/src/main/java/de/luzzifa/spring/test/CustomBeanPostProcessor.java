@@ -36,7 +36,7 @@ import org.springframework.beans.factory.config.TypedStringValue;
  * 
  * @author Wolfgang Deifel
  */
-public class TestBeanPostProcessor implements InstantiationAwareBeanPostProcessor
+public class CustomBeanPostProcessor implements InstantiationAwareBeanPostProcessor
 {
 	private static String[] propertyValues = {
 		"XString4711", "XString1", "XString1"
@@ -46,7 +46,7 @@ public class TestBeanPostProcessor implements InstantiationAwareBeanPostProcesso
 	/**
 	 * 
 	 */
-	public TestBeanPostProcessor()
+	public CustomBeanPostProcessor()
 	{
 		// TODO Auto-generated constructor stub
 	}
@@ -78,18 +78,10 @@ public class TestBeanPostProcessor implements InstantiationAwareBeanPostProcesso
 	@Override
 	public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException
 	{
-		List<PropertyValue> original;
-		if (pvs instanceof MutablePropertyValues)
-		{
-			original = ((MutablePropertyValues) pvs).getPropertyValueList();
-		}
-		else
-		{
-			original = Arrays.asList(pvs.getPropertyValues());
-		}
-
-		List<PropertyValue> deepCopy = new ArrayList<>(original.size());
+		final List<PropertyValue> original = getOriginalPropertyValuesList(pvs);
+		final List<PropertyValue> deepCopy = new ArrayList<>(original.size());
 	    boolean cloneNecessary = false;
+	    
 	    for (PropertyValue pv : original)
 	    {
 	      Object originalValue = pv.getValue();
@@ -114,6 +106,15 @@ public class TestBeanPostProcessor implements InstantiationAwareBeanPostProcesso
 	      pvs = new MutablePropertyValues(deepCopy);
 	    }
 	    return pvs;
+	}
+
+	private List<PropertyValue> getOriginalPropertyValuesList(PropertyValues pvs)
+	{
+		if (pvs instanceof MutablePropertyValues)
+		{
+			return ((MutablePropertyValues) pvs).getPropertyValueList();
+		}
+		return Arrays.asList(pvs.getPropertyValues());
 	}
 
 }
