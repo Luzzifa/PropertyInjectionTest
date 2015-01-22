@@ -41,14 +41,12 @@ public class TestCustomBeanCreation
 	@Test
 	public void testCreateBean3TimesWorks()
 	{
-		Object protoBean1 = context.getBean("testBean");
-		System.out.println("ProtoBean1: "+protoBean1+"@"+protoBean1.hashCode());
-		
-		Object protoBean2 = context.getBean("testBean");
-		System.out.println("ProtoBean2: "+protoBean2+"@"+protoBean2.hashCode());
-		
-		Object protoBean3 = context.getBean("testBean");
-		System.out.println("ProtoBean3: "+protoBean3+"@"+protoBean3.hashCode());
+		for (int x=1; x <= 99; ++x)
+		{
+			Object protoBean = context.getBean("testBean");
+			System.out.println("ProtoBean"+x+": "+protoBean+"@"+protoBean.hashCode());
+			
+		}
 	}
 
 }

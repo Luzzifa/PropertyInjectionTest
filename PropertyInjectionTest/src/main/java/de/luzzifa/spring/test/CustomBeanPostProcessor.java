@@ -26,7 +26,6 @@ import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
-import org.springframework.beans.factory.config.TypedStringValue;
 
 /**
  * TODO: pupose of this class
@@ -39,9 +38,9 @@ import org.springframework.beans.factory.config.TypedStringValue;
 public class CustomBeanPostProcessor implements InstantiationAwareBeanPostProcessor
 {
 	private static String[] propertyValues = {
-		"XString4711", "XString1", "XString1"
+		"XString1", "XString2", "XString1", "XString4"
 	};
-	private static int value = 0;
+	private static int value = -1;
 
 	/**
 	 * 
@@ -84,20 +83,18 @@ public class CustomBeanPostProcessor implements InstantiationAwareBeanPostProces
 	    
 	    for (PropertyValue pv : original)
 	    {
-	      Object originalValue = pv.getValue();
-	      Object convertedValue = ("${stringList}".equals(originalValue)) 
-	          ? propertyValues[(++value) % propertyValues.length].substring(1)
-	          : originalValue;
-	      if (originalValue == convertedValue)
-	      {
-	        deepCopy.add(pv);
-	      }
-	      else
-	      {
-	        final PropertyValue npv = new PropertyValue(pv, convertedValue);
-	        deepCopy.add(npv);
-	        cloneNecessary = true;
-	      }
+	        final Object originalValue = pv.getValue();
+			if ("${stringList}".equals(originalValue))
+			{
+				final Object newPropertyValue = getNewPropertyValue();
+				final PropertyValue npv = new PropertyValue(pv, newPropertyValue);
+				deepCopy.add(npv);
+				cloneNecessary = true;
+			}
+			else
+			{
+				deepCopy.add(pv);
+			}
 	    }
 	    
 	    if (cloneNecessary)
@@ -108,6 +105,15 @@ public class CustomBeanPostProcessor implements InstantiationAwareBeanPostProces
 	    return pvs;
 	}
 
+	/**
+	 * return every time a new String object
+	 * @return string123
+	 */
+	private Object getNewPropertyValue()
+	{
+		return new String(propertyValues[(++value) % propertyValues.length]);
+	}
+	
 	private List<PropertyValue> getOriginalPropertyValuesList(PropertyValues pvs)
 	{
 		if (pvs instanceof MutablePropertyValues)
